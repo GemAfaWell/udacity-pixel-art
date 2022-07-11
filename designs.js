@@ -1,29 +1,24 @@
-var height, width;
+const table = document.querySelector('#pixelCanvas');
+const sizePicker = document.querySelector('#sizePicker');
+const submit = document.querySelector('#submit');
 
-$('#sizePicker').submit(function(event) {
-  event.preventDefault();
-  height = $('#inputHeight').val();
-  width = $('#inputWidth').val();
-  makeGrid(height, width);
-
-});
-
-function makeGrid(x, y) {
-  $('tr').remove();
-
-  for (let i = 1; i <= x; i++) {
-    $('#pixelCanvas').append('<tr id=table' + i + '></tr>');
-    for (let j = 1; j <= y; j++) {
-      $('#table' + i).append('<td></td>');
+sizePicker.addEventListener("submit", function(event) {
+    event.preventDefault();
+    while (table.firstChild) {
+        table.removeChild(table.lastChild);
     }
-  }
-
-  $('td').click(function addColor() {
-    const color = $('#colorPicker').val();
-    if ($(this).attr('style')) {
-      $(this).removeAttr('style');
-    } else
-      $(this).attr('style', 'background-color:' + color);
-  });
-
-}
+    let height = document.getElementById('inputHeight').value;
+    let width = document.getElementById('inputWidth').value;
+    for (let i = 1; i <= height; i++) {
+        let row = document.createElement("tr");
+        table.appendChild(row);
+        for (let j = 1; j <= width; j++) {
+            let col = document.createElement("td");
+            row.appendChild(col);
+            col.addEventListener("click", function() {
+                const color = document.querySelector('#colorPicker').value;
+                this.style.background = color;
+            });
+        }
+    }
+});
